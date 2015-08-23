@@ -1,85 +1,36 @@
-# node-ytdl-core [![Build Status](https://secure.travis-ci.org/fent/node-ytdl-core.png)](http://travis-ci.org/fent/node-ytdl-core)
+# node-js-getting-started
 
-Yet another youtube downloading module. This time written with only Javascript and a more node-friendly streaming interface.
+A barebones Node.js app using [Express 4](http://expressjs.com/).
 
-For a CLI version of this, check out [ytdl](https://github.com/fent/node-ytdl) and [pully](https://github.com/JimmyBoh/pully).
+This application supports the [Getting Started with Node on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs) article - check it out.
 
-# Usage
+## Running Locally
 
-```js
-var fs = require('fs');
-var ytdl = require('ytdl-core');
+Make sure you have [Node.js](http://nodejs.org/) and the [Heroku Toolbelt](https://toolbelt.heroku.com/) installed.
 
-ytdl('http://www.youtube.com/watch?v=A02s8omM_hI')
-  .pipe(fs.createWriteStream('video.flv'));
+```sh
+$ git clone git@github.com:heroku/node-js-getting-started.git # or clone your own fork
+$ cd node-js-getting-started
+$ npm install
+$ npm start
 ```
 
+Your app should now be running on [localhost:5000](http://localhost:5000/).
 
-# API
-### ytdl(url, options)
+## Deploying to Heroku
 
-Attempts to download a video from the given url. Returns a readable stream. `options` can have the following keys
-
-* `quality` - Video quality to download. Can be an [itag value](http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs) value, or `highest`/`lowest`. Defaults to `highest`.
-* `filter` - Can be `video` to filter for formats that contain video, `videoonly` for formats that contain video and no additional audio track. Can also be `audio` or `audioonly`. You can give a filtering function that gets called with each format available. Used to decide what format to download. This function is given the `format` object as its first argument, and should return true if the format is preferable.
-* `format` - This can be a specific `format` object returned from `getInfo`. This is primarily used to download specific video or audio streams. **Note:** Supplying this option will ignore the `filter` and `quality` options since the format is explicitly provided.
-* `range` - A byte range in the form `INT-INT` that specifies a part of the video to download. ie 10355705-12452856.
-
-```js
-// Example with `filter` option.
-ytdl(url, { filter: function(format) { return format.container === 'mp4'; } })
-  .pipe(fs.createWriteStream('vide.mp4'));
+```
+$ heroku create
+$ git push heroku master
+$ heroku open
 ```
 
-`options` can also have any [request](https://github.com/mikeal/request) options.
+## Documentation
 
-The returned readable stream emits these additional events.
+For more information about using Node.js on Heroku, see these Dev Center articles:
 
-#### Event: 'info'
-* `Object` - Info.
-* `Object` - Format.
-
-Emitted when the a video's `info` hash is fetched. Along with the chosen format metadata to download. `format.url` might be different if `start` was given. `format.size` will also be available.
-
-Info and format may look like [this](https://gist.github.com/fent/6c8251132e1addb5121e).
-
-### ytdl.getInfo(url, [options], callback(err, info))
-
-Use this if you only want to get metainfo from a video.
-
-`options` gets passed to the `request()`, it can also have a `downloadURL` property set to `true` if you want ytdl to include the download url instead of the regular one. In some cases, a signature needs to be deciphered, and will require ytdl to make additional requests.
-
-### ytdl.downloadFromInfo(info, options)
-
-Once you have received metadata from a video with the `getInfo` function,
-you may pass that `info`, along with other `options` to `downloadFromInfo`.
-
-Note: Be sure to set the `downloadURL` option to `true` when you call `getInfo`
-or you will receive a 403 error when you call `downloadFromInfo`.
-
-The returned readable stream emits these additional events:
-
-#### Event: 'format'
-* `Object` - Format.
-
-Emitted when a format metadata has been chosen. `format.size` will also be available.
-
-# Tips
-### Handling Separate Streams
-
-Typically 1080p or better video does not have audio encoded with it. The audio must be downloaded separately and merged via an appropriate encoding library. `ffmpeg` is the most widely used tool, with many [Node.js modules available](https://www.npmjs.com/search?q=ffmpeg). Use the `format` objects returned from `ytdl.getInfo` to download specific streams to combine to fit your needs.
-
-# Install
-
-    npm install ytdl-core
-
-
-# Tests
-Tests are written with [mocha](http://visionmedia.github.com/mocha/)
-
-```bash
-npm test
-```
-
-# License
-MIT
+- [Getting Started with Node.js on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs)
+- [Heroku Node.js Support](https://devcenter.heroku.com/articles/nodejs-support)
+- [Node.js on Heroku](https://devcenter.heroku.com/categories/nodejs)
+- [Best Practices for Node.js Development](https://devcenter.heroku.com/articles/node-best-practices)
+- [Using WebSockets on Heroku with Node.js](https://devcenter.heroku.com/articles/node-websockets)
