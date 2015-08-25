@@ -11,15 +11,20 @@ app.get('/', function(request, response) {
 
     var url_parts = url.parse(request.url, true),
         query = url_parts.query,
-        youtubeURL = decodeURI(query["url"]);
+        youtubeURL = query["url"];
 
     if (typeof youtubeURL!== "undefined") {
-        response.setHeader('Content-disposition', 'attachment; filename='+url.parse(youtubeURL, true).query["v"]+'.mp3');
-        response.setHeader('Content-type', 'audio/mp3');
-        ytdl(youtubeURL, {filter: "audioonly"}).pipe(response);
+        try {
+            response.setHeader('Content-disposition', 'attachment; filename='+url.parse(decodeURI(youtubeURL), true).query["v"]+'.mp3');
+            response.setHeader('Content-type', 'audio/mp3');
+            ytdl(youtubeURL, {filter: "audioonly"}).pipe(response);
+        }
+        catch (err) {
+
+        }
         //response.send("saved?");
     } else {
-        response.send("URL is missing");
+        res.redirect('/public/index.html');
     }
 });
 
