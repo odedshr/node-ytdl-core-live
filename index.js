@@ -13,6 +13,8 @@ app.get('/', function(request, response) {
         query = url_parts.query,
         youtubeURL = query["url"];
 
+    console.log(youtubeURL);
+    response.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
     if (typeof youtubeURL!== "undefined") {
         try {
             response.setHeader('Content-disposition', 'attachment; filename='+url.parse(decodeURI(youtubeURL), true).query["v"]+'.mp3');
@@ -20,11 +22,11 @@ app.get('/', function(request, response) {
             ytdl(youtubeURL, {filter: "audioonly"}).pipe(response);
         }
         catch (err) {
-
+            res.status(500).send('Something broke!' + err);
         }
-        //response.send("saved?");
+        //
     } else {
-        res.redirect('/public/index.html');
+        response.sendFile('readme.html', {root: './public'});
     }
 });
 
