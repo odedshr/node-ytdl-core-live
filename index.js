@@ -18,7 +18,7 @@ app.get('/', function(request, response) {
     if (typeof youtubeURL!== "undefined") {
         try {
             response.setHeader('Content-disposition', 'attachment; filename='+url.parse(decodeURI(youtubeURL), true).query["v"]+'.mp3');
-            response.setHeader('Content-type', 'audio/mp3');
+            response.setHeader('Content-type', 'audio/mpeg');
             ytdl(youtubeURL, {filter: "audioonly"}).pipe(response);
         }
         catch (err) {
