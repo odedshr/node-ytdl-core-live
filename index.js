@@ -17,18 +17,14 @@ app.get('/', function(request, response) {
     //response.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
     if (typeof youtubeURL!== "undefined") {
         try {
-            response.header('Content-disposition', 'attachment; filename='+url.parse(decodeURI(youtubeURL), true).query["v"]+'.mp3');
-            response.header('Content-type', 'audio/mpeg');
-            response.header("Access-Control-Allow-Origin", "*");
-            response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-            var video = ytdl(youtubeURL, {filter: "audioonly"});
-            video.on('info', function(info) {
-                if (!response.headerSent) {
-                    response.header("ETag",info.filename);
-                    response.header("Content-Length",info.size);
-                }
+            ytdl.getInfo(youtubeURL, {filter: "audioonly"}, function gotInfo (err,info) {
+                response.header('Content-disposition', 'attachment; filename='+info.title.replace(/[^\w\s]/gi, '')+'.mp3');
+                response.header('Content-type', 'audio/mpeg');
+                response.header("Access-Control-Allow-Origin", "*");
+                response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+                ytdl(youtubeURL, {filter: "audioonly"}).pipe(response);
             });
-            video.pipe(response);
         }
         catch (err) {
             res.status(500).send('Something broke!' + err);
