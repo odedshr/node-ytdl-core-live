@@ -1,36 +1,20 @@
-# node-js-getting-started
+# node-ytdl-core-live
 
-A barebones Node.js app using [Express 4](http://expressjs.com/).
+I just placed [node-youtube-dl](https://github.com/fent/node-youtube-dl) binaries and made them available
 
-This application supports the [Getting Started with Node on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs) article - check it out.
+I needed this so my [rikud](odedshr.github.io/rikud) could easy download youtube songs into the player
 
-## Running Locally
+## The code
 
-Make sure you have [Node.js](http://nodejs.org/) and the [Heroku Toolbelt](https://toolbelt.heroku.com/) installed.
+There's not much of a code really, only getting URL as parameter and sending it to the node-youtube-dl engine, which will pipe the file content to the response stream.
 
-```sh
-$ git clone git@github.com:heroku/node-js-getting-started.git # or clone your own fork
-$ cd node-js-getting-started
-$ npm install
-$ npm start
-```
+## Using it
 
-Your app should now be running on [localhost:5000](http://localhost:5000/).
+index.js get a parameter of URL, which should be a youtube URL. if no URL was provided, a simple html page will load.
+If non-youtube URL is provided, I will not be held responsible.
 
-## Deploying to Heroku
+Please don't misuse this tool.
 
-```
-$ heroku create
-$ git push heroku master
-$ heroku open
-```
+##Acknowledgements
 
-## Documentation
-
-For more information about using Node.js on Heroku, see these Dev Center articles:
-
-- [Getting Started with Node.js on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs)
-- [Heroku Node.js Support](https://devcenter.heroku.com/articles/nodejs-support)
-- [Node.js on Heroku](https://devcenter.heroku.com/categories/nodejs)
-- [Best Practices for Node.js Development](https://devcenter.heroku.com/articles/node-best-practices)
-- [Using WebSockets on Heroku with Node.js](https://devcenter.heroku.com/articles/node-websockets)
+This piece of code is under "[The MIT License](http://opensource.org/licenses/MIT)", meaning you can do whatever you want with it. it's free, as all intellectual property should be. Enjoy.
