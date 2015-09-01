@@ -36,6 +36,8 @@ app.get('/', function(request, response) {
 });
 
 app.get('/ping', function(request, response) {
+    response.header("Access-Control-Allow-Origin", "*");
+    response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     response.end("pong");
 });
 
