@@ -67,20 +67,6 @@ app.get('/ping', function(request, response) {
     response.end("pong");
 });
 
-app.get('/test', function(request, response) {
-    var path = "./public/test.mp3";
-    var stat = fs.statSync(path);
-
-    response.writeHead(200, {
-        'Content-Type': 'audio/mpeg',
-        'Content-Length': stat.size
-    });
-
-    var readStream = fs.createReadStream(path);
-    // We replaced all the event handlers with a simple call to readStream.pipe()
-    readStream.pipe(response);
-});
-
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
