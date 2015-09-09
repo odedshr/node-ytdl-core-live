@@ -64,9 +64,21 @@ app.get('/', function(request, response) {
 });
 
 app.get('/ping', function(request, response) {
-    response.header("Access-Control-Allow-Origin", "*");
-    response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     response.end("pong");
+});
+
+app.get('/test', function(request, response) {
+    var path = "./public/test.mp3";
+    var stat = fs.statSync(path);
+
+    response.writeHead(200, {
+        'Content-Type': 'audio/mpeg',
+        'Content-Length': stat.size
+    });
+
+    var readStream = fs.createReadStream(path);
+    // We replaced all the event handlers with a simple call to readStream.pipe()
+    readStream.pipe(response);
 });
 
 app.listen(app.get('port'), function() {
